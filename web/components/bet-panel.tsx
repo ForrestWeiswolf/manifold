@@ -196,7 +196,7 @@ export function BetPanelSwitcher(props: {
   )
 }
 
-function BetProbability(props: { initialProb: number, resultProb: number }) {
+function BetProbability(props: {initialProb: number, resultProb: number}) {
   return <>
     <div className="text-gray-500">Probability</div>
     <div>
@@ -205,23 +205,6 @@ function BetProbability(props: { initialProb: number, resultProb: number }) {
       {formatPercent(props.resultProb)}
     </div>
   </>
-}
-
-function BetSubmitButton(props: { disabled: boolean, isSubmitting: boolean, outcomeChoice: string | undefined, submit: () => {}, text: string }) {
-  return <button
-    className={clsx(
-      'btn flex-1',
-      props.disabled
-        ? 'btn-disabled'
-        : props.outcomeChoice === 'YES'
-          ? 'btn-primary'
-          : 'border-none bg-red-400 hover:bg-red-500',
-      props.isSubmitting ? 'loading' : ''
-    )}
-    onClick={props.disabled ? undefined : props.submit}
-  >
-    {props.isSubmitting ? 'Submitting...' : props.text}
-  </button>
 }
 
 function BuyPanel(props: {
@@ -388,7 +371,20 @@ function BuyPanel(props: {
       <Spacer h={8} />
 
       {user && (
-        <BetSubmitButton disabled={!!betDisabled} outcomeChoice={betChoice} submit={submitBet} isSubmitting={isSubmitting} text={'Submit bet'} />
+        <button
+          className={clsx(
+            'btn flex-1',
+            betDisabled
+              ? 'btn-disabled'
+              : betChoice === 'YES'
+                ? 'btn-primary'
+                : 'border-none bg-red-400 hover:bg-red-500',
+            isSubmitting ? 'loading' : ''
+          )}
+          onClick={betDisabled ? undefined : submitBet}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit bet'}
+        </button>
       )}
 
       {wasSubmitted && <div className="mt-4">Bet submitted!</div>}
@@ -513,7 +509,20 @@ export function SellPanel(props: {
 
       <Spacer h={8} />
 
-      <BetSubmitButton disabled={!!betDisabled} outcomeChoice={sharesOutcome} submit={submitSell} isSubmitting={isSubmitting} text={'Submit sell'} />
+      <button
+        className={clsx(
+          'btn flex-1',
+          betDisabled
+            ? 'btn-disabled'
+            : sharesOutcome === 'YES'
+              ? 'btn-primary'
+              : 'border-none bg-red-400 hover:bg-red-500',
+          isSubmitting ? 'loading' : ''
+        )}
+        onClick={betDisabled ? undefined : submitSell}
+      >
+        {isSubmitting ? 'Submitting...' : 'Submit sell'}
+      </button>
 
       {wasSubmitted && <div className="mt-4">Sell submitted!</div>}
     </>
