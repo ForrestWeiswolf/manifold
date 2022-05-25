@@ -48,8 +48,8 @@ export function BetPanel(props: {
   const sharesOutcome = yesFloorShares
     ? 'YES'
     : noFloorShares
-      ? 'NO'
-      : undefined
+    ? 'NO'
+    : undefined
 
   return (
     <Col className={className}>
@@ -108,8 +108,8 @@ export function BetPanelSwitcher(props: {
   const sharesOutcome = yesFloorShares
     ? 'YES'
     : noFloorShares
-      ? 'NO'
-      : undefined
+    ? 'NO'
+    : undefined
 
   useEffect(() => {
     // Switch back to BUY if the user has sold all their shares.
@@ -196,32 +196,42 @@ export function BetPanelSwitcher(props: {
   )
 }
 
-function BetProbability(props: { initialProb: number, resultProb: number }) {
-  return <>
-    <div className="text-gray-500">Probability</div>
-    <div>
-      {formatPercent(props.initialProb)}
-      <span className="mx-2">→</span>
-      {formatPercent(props.resultProb)}
-    </div>
-  </>
+function BetProbability(props: { initialProb: number; resultProb: number }) {
+  return (
+    <>
+      <div className="text-gray-500">Probability</div>
+      <div>
+        {formatPercent(props.initialProb)}
+        <span className="mx-2">→</span>
+        {formatPercent(props.resultProb)}
+      </div>
+    </>
+  )
 }
 
-function BetSubmitButton(props: { disabled: boolean, isSubmitting: boolean, outcomeChoice: string | undefined, submit: () => {}, text: string }) {
-  return <button
-    className={clsx(
-      'btn flex-1',
-      props.disabled
-        ? 'btn-disabled'
-        : props.outcomeChoice === 'YES'
+function BetSubmitButton(props: {
+  disabled: boolean
+  isSubmitting: boolean
+  outcomeChoice: string | undefined
+  submit: () => {}
+  text: string
+}) {
+  return (
+    <button
+      className={clsx(
+        'btn flex-1',
+        props.disabled
+          ? 'btn-disabled'
+          : props.outcomeChoice === 'YES'
           ? 'btn-primary'
           : 'border-none bg-red-400 hover:bg-red-500',
-      props.isSubmitting ? 'loading' : ''
-    )}
-    onClick={props.disabled ? undefined : props.submit}
-  >
-    {props.isSubmitting ? 'Submitting...' : props.text}
-  </button>
+        props.isSubmitting ? 'loading' : ''
+      )}
+      onClick={props.disabled ? undefined : props.submit}
+    >
+      {props.isSubmitting ? 'Submitting...' : props.text}
+    </button>
+  )
 }
 
 function BuyPanel(props: {
@@ -242,7 +252,7 @@ function BuyPanel(props: {
 
   useEffect(() => {
     // warm up cloud function
-    placeBet({}).catch(() => { })
+    placeBet({}).catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -307,10 +317,10 @@ function BuyPanel(props: {
 
   const currentPayout = betAmount
     ? calculatePayoutAfterCorrectBet(contract, {
-      outcome: betChoice,
-      amount: betAmount,
-      shares,
-    } as Bet)
+        outcome: betChoice,
+        amount: betAmount,
+        shares,
+      } as Bet)
     : 0
 
   const currentReturn = betAmount ? (currentPayout - betAmount) / betAmount : 0
@@ -323,12 +333,12 @@ function BuyPanel(props: {
   const dpmTooltip =
     contract.mechanism === 'dpm-2'
       ? `Current payout for ${formatWithCommas(shares)} / ${formatWithCommas(
-        shares +
-        contract.totalShares[betChoice ?? 'YES'] -
-        (contract.phantomShares
-          ? contract.phantomShares[betChoice ?? 'YES']
-          : 0)
-      )} ${betChoice ?? 'YES'} shares`
+          shares +
+            contract.totalShares[betChoice ?? 'YES'] -
+            (contract.phantomShares
+              ? contract.phantomShares[betChoice ?? 'YES']
+              : 0)
+        )} ${betChoice ?? 'YES'} shares`
       : undefined
   return (
     <>
@@ -388,7 +398,13 @@ function BuyPanel(props: {
       <Spacer h={8} />
 
       {user && (
-        <BetSubmitButton disabled={!!betDisabled} outcomeChoice={betChoice} submit={submitBet} isSubmitting={isSubmitting} text={'Submit bet'} />
+        <BetSubmitButton
+          disabled={!!betDisabled}
+          outcomeChoice={betChoice}
+          submit={submitBet}
+          isSubmitting={isSubmitting}
+          text={'Submit bet'}
+        />
       )}
 
       {wasSubmitted && <div className="mt-4">Bet submitted!</div>}
@@ -513,7 +529,13 @@ export function SellPanel(props: {
 
       <Spacer h={8} />
 
-      <BetSubmitButton disabled={!!betDisabled} outcomeChoice={sharesOutcome} submit={submitSell} isSubmitting={isSubmitting} text={'Submit sell'} />
+      <BetSubmitButton
+        disabled={!!betDisabled}
+        outcomeChoice={sharesOutcome}
+        submit={submitSell}
+        isSubmitting={isSubmitting}
+        text={'Submit sell'}
+      />
 
       {wasSubmitted && <div className="mt-4">Sell submitted!</div>}
     </>
