@@ -48,8 +48,8 @@ export function BetPanel(props: {
   const sharesOutcome = yesFloorShares
     ? 'YES'
     : noFloorShares
-    ? 'NO'
-    : undefined
+      ? 'NO'
+      : undefined
 
   return (
     <Col className={className}>
@@ -108,8 +108,8 @@ export function BetPanelSwitcher(props: {
   const sharesOutcome = yesFloorShares
     ? 'YES'
     : noFloorShares
-    ? 'NO'
-    : undefined
+      ? 'NO'
+      : undefined
 
   useEffect(() => {
     // Switch back to BUY if the user has sold all their shares.
@@ -196,6 +196,17 @@ export function BetPanelSwitcher(props: {
   )
 }
 
+function BetProbability(props: {initialProb: number, resultProb: number}) {
+  return <>
+    <div className="text-gray-500">Probability</div>
+    <div>
+      {formatPercent(props.initialProb)}
+      <span className="mx-2">→</span>
+      {formatPercent(props.resultProb)}
+    </div>
+  </>
+}
+
 function BuyPanel(props: {
   contract: FullContract<DPM | CPMM, Binary>
   user: User | null | undefined
@@ -214,7 +225,7 @@ function BuyPanel(props: {
 
   useEffect(() => {
     // warm up cloud function
-    placeBet({}).catch(() => {})
+    placeBet({}).catch(() => { })
   }, [])
 
   useEffect(() => {
@@ -279,10 +290,10 @@ function BuyPanel(props: {
 
   const currentPayout = betAmount
     ? calculatePayoutAfterCorrectBet(contract, {
-        outcome: betChoice,
-        amount: betAmount,
-        shares,
-      } as Bet)
+      outcome: betChoice,
+      amount: betAmount,
+      shares,
+    } as Bet)
     : 0
 
   const currentReturn = betAmount ? (currentPayout - betAmount) / betAmount : 0
@@ -295,12 +306,12 @@ function BuyPanel(props: {
   const dpmTooltip =
     contract.mechanism === 'dpm-2'
       ? `Current payout for ${formatWithCommas(shares)} / ${formatWithCommas(
-          shares +
-            contract.totalShares[betChoice ?? 'YES'] -
-            (contract.phantomShares
-              ? contract.phantomShares[betChoice ?? 'YES']
-              : 0)
-        )} ${betChoice ?? 'YES'} shares`
+        shares +
+        contract.totalShares[betChoice ?? 'YES'] -
+        (contract.phantomShares
+          ? contract.phantomShares[betChoice ?? 'YES']
+          : 0)
+      )} ${betChoice ?? 'YES'} shares`
       : undefined
   return (
     <>
@@ -323,12 +334,7 @@ function BuyPanel(props: {
 
       <Col className="mt-3 w-full gap-3">
         <Row className="items-center justify-between text-sm">
-          <div className="text-gray-500">Probability</div>
-          <div>
-            {formatPercent(initialProb)}
-            <span className="mx-2">→</span>
-            {formatPercent(resultProb)}
-          </div>
+          <BetProbability initialProb={initialProb} resultProb={resultProb} />
         </Row>
 
         <Row className="items-center justify-between gap-2 text-sm">
@@ -371,8 +377,8 @@ function BuyPanel(props: {
             betDisabled
               ? 'btn-disabled'
               : betChoice === 'YES'
-              ? 'btn-primary'
-              : 'border-none bg-red-400 hover:bg-red-500',
+                ? 'btn-primary'
+                : 'border-none bg-red-400 hover:bg-red-500',
             isSubmitting ? 'loading' : ''
           )}
           onClick={betDisabled ? undefined : submitBet}
@@ -497,12 +503,7 @@ export function SellPanel(props: {
           <span className="text-neutral">{formatMoney(saleValue)}</span>
         </Row>
         <Row className="items-center justify-between">
-          <div className="text-gray-500">Probability</div>
-          <div>
-            {formatPercent(initialProb)}
-            <span className="mx-2">→</span>
-            {formatPercent(resultProb)}
-          </div>
+          <BetProbability initialProb={initialProb} resultProb={resultProb} />
         </Row>
       </Col>
 
@@ -514,8 +515,8 @@ export function SellPanel(props: {
           betDisabled
             ? 'btn-disabled'
             : sharesOutcome === 'YES'
-            ? 'btn-primary'
-            : 'border-none bg-red-400 hover:bg-red-500',
+              ? 'btn-primary'
+              : 'border-none bg-red-400 hover:bg-red-500',
           isSubmitting ? 'loading' : ''
         )}
         onClick={betDisabled ? undefined : submitSell}
